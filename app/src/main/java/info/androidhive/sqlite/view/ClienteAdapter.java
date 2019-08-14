@@ -19,12 +19,12 @@ import java.util.Date;
 import java.util.List;
 
 import info.androidhive.sqlite.R;
-import info.androidhive.sqlite.database.model.Note;
+import info.androidhive.sqlite.database.model.Cliente;
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
+public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHolder> {
 
     private Context context;
-    private List<Note> notesList;
+    private List<Cliente> clientesList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
@@ -40,9 +40,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     }
 
 
-    public NotesAdapter(Context context, List<Note> notesList) {
+    public ClienteAdapter(Context context, List<Cliente> clientesList) {
         this.context = context;
-        this.notesList = notesList;
+        this.clientesList = clientesList;
     }
 
     @Override
@@ -55,20 +55,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Note note = notesList.get(position);
+        Cliente cliente = clientesList.get(position);
 
-        holder.note.setText(note.getNote());
+        holder.note.setText(cliente.getNombre());
 
         // Displaying dot from HTML character code
         holder.dot.setText(Html.fromHtml("&#8226;"));
 
         // Formatting and displaying timestamp
-        holder.timestamp.setText(formatDate(note.getTimestamp()));
+        holder.timestamp.setText(formatDate(cliente.getTimestamp()));
     }
 
     @Override
     public int getItemCount() {
-        return notesList.size();
+        return clientesList.size();
     }
 
     /**

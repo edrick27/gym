@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +24,13 @@ import java.util.List;
 
 import info.androidhive.sqlite.R;
 import info.androidhive.sqlite.database.DatabaseHelper;
-import info.androidhive.sqlite.database.model.Note;
+import info.androidhive.sqlite.database.model.Cliente;
 import info.androidhive.sqlite.utils.MyDividerItemDecoration;
 import info.androidhive.sqlite.utils.RecyclerTouchListener;
 
 public class MainActivity extends AppCompatActivity {
-    private NotesAdapter mAdapter;
-    private List<Note> notesList = new ArrayList<>();
+    private ClienteAdapter mAdapter;
+    private List<Cliente> clienteList = new ArrayList<>();
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
     private TextView noNotesView;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        notesList.addAll(db.getAllNotes());
+        clienteList.addAll(db.getAllClientes());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAdapter = new NotesAdapter(this, notesList);
+        mAdapter = new ClienteAdapter(this, clienteList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,17 +91,17 @@ public class MainActivity extends AppCompatActivity {
      * Inserting new note in db
      * and refreshing the list
      */
-    private void createNote(String note) {
+    private void createNote(Cliente cliente) {
         // inserting note in db and getting
         // newly inserted note id
-        long id = db.insertNote(note);
+        long id = db.insertCliente(cliente);
 
         // get the newly inserted note from db
-        Note n = db.getNote(id);
+        Cliente c = db.getNote(id);
 
-        if (n != null) {
+        if (c != null) {
             // adding new note to array list at 0 position
-            notesList.add(0, n);
+            clienteList.add(0, c);
 
             // refreshing the list
             mAdapter.notifyDataSetChanged();
@@ -112,16 +114,16 @@ public class MainActivity extends AppCompatActivity {
      * Updating note in db and updating
      * item in the list by its position
      */
-    private void updateNote(String note, int position) {
-        Note n = notesList.get(position);
+    private void updateNote(String nombre, int position) {
+        Cliente c = clienteList.get(position);
         // updating note text
-        n.setNote(note);
+        c.setNombre(nombre);
 
         // updating note in db
-        db.updateNote(n);
+        db.updateNote(c);
 
         // refreshing the list
-        notesList.set(position, n);
+        clienteList.set(position, c);
         mAdapter.notifyItemChanged(position);
 
         toggleEmptyNotes();
@@ -133,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void deleteNote(int position) {
         // deleting the note from db
-        db.deleteNote(notesList.get(position));
+        db.deleteNote(clienteList.get(position));
 
         // removing the note from the list
-        notesList.remove(position);
+        clienteList.remove(position);
         mAdapter.notifyItemRemoved(position);
 
         toggleEmptyNotes();
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    showNoteDialog(true, notesList.get(position), position);
+                    showNoteDialog(true, clienteList.get(position), position);
                 } else {
                     deleteNote(position);
                 }
@@ -172,23 +174,31 @@ public class MainActivity extends AppCompatActivity {
      * when shouldUpdate=true, it automatically displays old note and changes the
      * button text to UPDATE
      */
-    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
+    private void showNoteDialog(final boolean shouldUpdate, final Cliente cliente, final int position) {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
+        View view = layoutInflaterAndroid.inflate(R.layout.cliente_dialog, null);
 
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
         alertDialogBuilderUserInput.setView(view);
 
-        final EditText inputNote = view.findViewById(R.id.note);
+        final EditText inputNombre = view.findViewById(R.id.nombre);
+        final EditText inputEdad = view.findViewById(R.id.edad);
+        final EditText inputEstatura = view.findViewById(R.id.estatura);
+        final EditText inputImc = view.findViewById(R.id.imc);
+        final EditText inputPeso = view.findViewById(R.id.peso);
         TextView dialogTitle = view.findViewById(R.id.dialog_title);
         dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
 
-        if (shouldUpdate && note != null) {
-            inputNote.setText(note.getNote());
+        if (shouldUpdate && cliente != null) {
+            inputNombre.setText(cliente.getNombre());
+            inputEdad.setText(cliente.getEdad());
+            inputEstatura.setText(cliente.getEstatura());
+            inputImc.setText(cliente.getImc());
+            inputPeso.setText(cliente.getPeso());
         }
         alertDialogBuilderUserInput
                 .setCancelable(false)
-                .setPositiveButton(shouldUpdate ? "update" : "save", new DialogInterface.OnClickListener() {
+                .setPositiveButton(shouldUpdate ? "Editar" : "Guardar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogBox, int id) {
 
                     }
@@ -201,26 +211,33 @@ public class MainActivity extends AppCompatActivity {
                         });
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         alertDialog.show();
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show toast message when no text is entered
-                if (TextUtils.isEmpty(inputNote.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+                /*if (TextUtils.isEmpty(inputNombre.getEditText().getText().toString())) {
+                    Toast.makeText(MainActivity.this, "Hay campos vacios!", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     alertDialog.dismiss();
-                }
+                }*/
 
                 // check if user updating note
-                if (shouldUpdate && note != null) {
+                if (shouldUpdate && cliente != null) {
                     // update note by it's id
-                    updateNote(inputNote.getText().toString(), position);
+                    updateNote(inputNombre.getText().toString(), position);
                 } else {
                     // create new note
-                    createNote(inputNote.getText().toString());
+                    Cliente newCliente = new Cliente();
+                    newCliente.setNombre(inputNombre.getText().toString());
+                    newCliente.setEdad(inputEdad.getText().toString());
+                    newCliente.setEstatura(inputEstatura.getText().toString());
+                    newCliente.setImc(inputImc.getText().toString());
+                    newCliente.setPeso(inputPeso.getText().toString());
+                    createNote(newCliente);
                 }
             }
         });
@@ -230,9 +247,7 @@ public class MainActivity extends AppCompatActivity {
      * Toggling list and empty notes view
      */
     private void toggleEmptyNotes() {
-        // you can check notesList.size() > 0
-
-        if (db.getNotesCount() > 0) {
+               if (db.getClientesCount() > 0) {
             noNotesView.setVisibility(View.GONE);
         } else {
             noNotesView.setVisibility(View.VISIBLE);
