@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ClienteRutineActivity">
+
+    <LinearLayout
+        android:id="@+id/container_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_margin"
+        android:paddingTop="@dimen/activity_margin"
+        android:paddingRight="@dimen/activity_margin">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="320dp"
+            android:layout_height="100dp"
+            app:cardCornerRadius="10dp">
+
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:padding="10dp">
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <TextView
+                        android:text="Nombre: "
+                        android:textStyle="bold"
+                        android:padding="3dip"
+                        android:layout_weight="0"/>
+
+                    <TextView
+                        android:id="@+id/cliente_nombre"
+                        android:text="Mela"
+                        android:padding="3dip"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:text="Edad: "
+                        android:textStyle="bold"
+                        android:padding="3dip"
+                        android:layout_weight="0"/>
+                    <TextView
+                        android:id="@+id/cliente_edad"
+                        android:padding="3dip"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="Estatura: "
+                        android:textStyle="bold"
+                        android:padding="3dip"
+                        android:layout_weight="0"/>
+                    <TextView
+                        android:id="@+id/cliente_estatura"
+                        android:padding="3dip"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:text="Peso: "
+                        android:textStyle="bold"
+                        android:padding="3dip"
+                        android:layout_weight="0"/>
+                    <TextView
+                        android:id="@+id/cliente_peso"
+                        android:padding="3dip"
+                        android:layout_weight="1"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="IMC: "
+                        android:textStyle="bold"
+                        android:padding="3dip"
+                        android:layout_weight="0"/>
+                    <TextView
+                        android:id="@+id/cliente_imc"
+                        android:padding="3dip"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+        </android.support.v7.widget.CardView>
+        <include layout="@layout/content_main" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_rutine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>

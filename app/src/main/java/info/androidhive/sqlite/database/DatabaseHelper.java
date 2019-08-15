@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public Cliente getNote(long id) {
+    public Cliente getCliente(long id) {
         // get readable database as we are not inserting anything
         SQLiteDatabase db = this.getReadableDatabase();
 

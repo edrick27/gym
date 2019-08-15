@@ -1,23 +1,21 @@
 package info.androidhive.sqlite.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +25,7 @@ import info.androidhive.sqlite.database.DatabaseHelper;
 import info.androidhive.sqlite.database.model.Cliente;
 import info.androidhive.sqlite.utils.MyDividerItemDecoration;
 import info.androidhive.sqlite.utils.RecyclerTouchListener;
+import info.androidhive.sqlite.view.adapter.ClienteAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private ClienteAdapter mAdapter;
@@ -78,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
+                Intent intent = new Intent(getApplicationContext(), ClienteRutineActivity.class);
+                Cliente c = clienteList.get(position);
+                intent.putExtra("id", c.getId() + "");
+                startActivity(intent);
             }
 
             @Override
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         long id = db.insertCliente(cliente);
 
         // get the newly inserted note from db
-        Cliente c = db.getNote(id);
+        Cliente c = db.getCliente(id);
 
         if (c != null) {
             // adding new note to array list at 0 position
