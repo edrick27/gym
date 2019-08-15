@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
      * Inserting new note in db
      * and refreshing the list
      */
-    private void createNote(Cliente cliente) {
+    private void createCliente(Cliente cliente) {
         // inserting note in db and getting
         // newly inserted note id
         long id = db.insertCliente(cliente);
@@ -237,7 +237,8 @@ public class MainActivity extends AppCompatActivity {
                     newCliente.setEstatura(inputEstatura.getText().toString());
                     newCliente.setImc(inputImc.getText().toString());
                     newCliente.setPeso(inputPeso.getText().toString());
-                    createNote(newCliente);
+                    createCliente(newCliente);
+                    alertDialog.hide();
                 }
             }
         });
@@ -247,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
      * Toggling list and empty notes view
      */
     private void toggleEmptyNotes() {
-               if (db.getClientesCount() > 0) {
+        if (db.getClientesCount() > 0) {
             noNotesView.setVisibility(View.GONE);
         } else {
             noNotesView.setVisibility(View.VISIBLE);
