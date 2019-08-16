@@ -14,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         c.setNombre(nombre);
 
         // updating note in db
-        db.updateNote(c);
+        db.updateClient(c);
 
         // refreshing the list
         clienteList.set(position, c);
@@ -247,9 +249,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Toggling list and empty notes view
-     */
+
     private void toggleEmptyNotes() {
         if (db.getClientesCount() > 0) {
             noNotesView.setVisibility(View.GONE);
@@ -257,4 +257,6 @@ public class MainActivity extends AppCompatActivity {
             noNotesView.setVisibility(View.VISIBLE);
         }
     }
+
+
 }

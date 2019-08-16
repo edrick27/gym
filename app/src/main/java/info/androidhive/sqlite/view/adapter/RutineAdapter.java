@@ -14,12 +14,11 @@ import java.util.Date;
 import java.util.List;
 
 import info.androidhive.sqlite.R;
-import info.androidhive.sqlite.database.model.Cliente;
+import info.androidhive.sqlite.database.model.Rutine;
 
-public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHolder> {
-
+public class RutineAdapter  extends RecyclerView.Adapter<RutineAdapter.MyViewHolder> {
     private Context context;
-    private List<Cliente> clientesList;
+    private List<Rutine> rutineList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
@@ -35,9 +34,9 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHo
     }
 
 
-    public ClienteAdapter(Context context, List<Cliente> clientesList) {
+    public RutineAdapter(Context context, List<Rutine> rutineList) {
         this.context = context;
-        this.clientesList = clientesList;
+        this.rutineList = rutineList;
     }
 
     @Override
@@ -45,32 +44,31 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.MyViewHo
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_list_row, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new RutineAdapter.MyViewHolder(itemView);
     }
+
+
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Cliente cliente = clientesList.get(position);
+        Rutine rutine = rutineList.get(position);
 
-        holder.note.setText(cliente.getNombre());
+        holder.note.setText(rutine.getExercise());
 
         // Displaying dot from HTML character code
         holder.dot.setText(Html.fromHtml("&#8226;"));
 
         // Formatting and displaying timestamp
-        holder.timestamp.setText(formatDate(cliente.getTimestamp()));
+        holder.timestamp.setText("");
+//        holder.timestamp.setText(formatDate(rutine.getTimestamp()));
     }
 
     @Override
     public int getItemCount() {
-        return clientesList.size();
+        return rutineList.size();
     }
 
-    /**
-     * Formatting timestamp to `MMM d` format
-     * Input: 2018-02-21 00:15:42
-     * Output: Feb 21
-     */
+
     private String formatDate(String dateStr) {
         try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

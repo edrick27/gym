@@ -13,6 +13,7 @@ public class Cliente {
     public static final String COLUMN_ESTATURA = "estatura";
     public static final String COLUMN_IMC = "IMC";
     public static final String COLUMN_PESO = "peso";
+    public static final String COLUMN_EXERCISE = "exercise";
     public static final String COLUMN_TIMESTAMP = "timestamp";
 
     private int id;
@@ -21,6 +22,7 @@ public class Cliente {
     private String estatura;
     private String imc;
     private String peso;
+    private String exercise;
     private String timestamp;
 
 
@@ -33,18 +35,20 @@ public class Cliente {
                     + COLUMN_ESTATURA + " TEXT,"
                     + COLUMN_IMC + " TEXT,"
                     + COLUMN_PESO + " TEXT,"
+                    + COLUMN_EXERCISE + " TEXT,"
                     + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                     + ")";
 
     public Cliente() { }
 
-    public Cliente(int id, String nombre, String edad, String estatura, String imc, String peso, String timestamp) {
+    public Cliente(int id, String nombre, String edad, String estatura, String imc, String peso,String exercise, String timestamp) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
         this.estatura = estatura;
         this.imc = imc;
         this.peso = peso;
+        this.exercise = exercise;
         this.timestamp = timestamp;
     }
 
@@ -103,4 +107,13 @@ public class Cliente {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(String exercise) {
+        this.exercise = exercise;
+    }
+
 }

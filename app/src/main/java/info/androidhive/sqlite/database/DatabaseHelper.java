@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Cliente.TABLE_NAME,
-                new String[]{Cliente.COLUMN_ID, Cliente.COLUMN_NOMBRE, Cliente.COLUMN_EDAD, Cliente.COLUMN_ESTATURA, Cliente.COLUMN_IMC,  Cliente.COLUMN_PESO, Cliente.COLUMN_TIMESTAMP},
+                new String[]{Cliente.COLUMN_ID, Cliente.COLUMN_NOMBRE, Cliente.COLUMN_EDAD, Cliente.COLUMN_ESTATURA, Cliente.COLUMN_IMC,  Cliente.COLUMN_PESO,Cliente.COLUMN_EXERCISE, Cliente.COLUMN_TIMESTAMP},
                 Cliente.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -89,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(Cliente.COLUMN_ESTATURA)),
                 cursor.getString(cursor.getColumnIndex(Cliente.COLUMN_IMC)),
                 cursor.getString(cursor.getColumnIndex(Cliente.COLUMN_PESO)),
+                cursor.getString(cursor.getColumnIndex(Cliente.COLUMN_EXERCISE)),
                 cursor.getString(cursor.getColumnIndex(Cliente.COLUMN_TIMESTAMP)));
 
         // close the db connection
@@ -139,7 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int updateNote(Cliente cliente) {
+    public int updateClient(Cliente cliente) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -148,6 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Cliente.COLUMN_ESTATURA, cliente.getEstatura());
         values.put(Cliente.COLUMN_IMC, cliente.getImc());
         values.put(Cliente.COLUMN_PESO, cliente.getPeso());
+        values.put(Cliente.COLUMN_EXERCISE, cliente.getExercise());
 
         // updating row
         return db.update(Cliente.TABLE_NAME, values, Cliente.COLUMN_ID + " = ?",
