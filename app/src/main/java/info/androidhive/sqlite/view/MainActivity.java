@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
                     newCliente.setEstatura(inputEstatura.getText().toString());
                     newCliente.setImc(inputImc.getText().toString());
                     newCliente.setPeso(inputPeso.getText().toString());
+                    newCliente.setExercise("");
                     createCliente(newCliente);
                     alertDialog.hide();
                 }

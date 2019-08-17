@@ -24,7 +24,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import info.androidhive.sqlite.R;
@@ -32,7 +31,6 @@ import info.androidhive.sqlite.database.DatabaseHelper;
 import info.androidhive.sqlite.database.model.Cliente;
 import info.androidhive.sqlite.database.model.Rutine;
 import info.androidhive.sqlite.utils.MyDividerItemDecoration;
-import info.androidhive.sqlite.view.adapter.ClienteAdapter;
 import info.androidhive.sqlite.view.adapter.RutineAdapter;
 
 public class ClienteRutineActivity extends AppCompatActivity {
@@ -55,10 +53,7 @@ public class ClienteRutineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         db = new DatabaseHelper(this);
-
         this.getCliente();
-//        this.showRutines();
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_rutine);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +86,16 @@ public class ClienteRutineActivity extends AppCompatActivity {
         TextView peso = this.findViewById(R.id.cliente_peso);
         peso.setText(c.getPeso());
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Rutine>>(){}.getType();
-        RutineList = gson.fromJson(c.getExercise(), listType);
+        String rutineStr = c.getExercise();
 
-        this.showRutines();
+        if(rutineStr != null){
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Rutine>>(){}.getType();
+            RutineList = gson.fromJson(c.getExercise(), listType);
+
+            this.showRutines();
+        }
+
     }
 
     private void showRutines(){
@@ -146,7 +146,6 @@ public class ClienteRutineActivity extends AppCompatActivity {
                         });
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
-//        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         final Spinner spinner = view.findViewById(R.id.spinner1);
         this.initSpinner(spinner);
         alertDialog.show();
@@ -156,18 +155,23 @@ public class ClienteRutineActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String text = spinner.getSelectedItem().toString();
 
+
                 Rutine r = new Rutine();
                 r.setExercise(text);
-                RutineList.add(0, r);
-                mAdapter.notifyDataSetChanged();
+
+                if(RutineList.size() == 0){
+                    RutineList.add(0, r);
+                    showRutines();
+                }else{
+                    RutineList.add(0, r);
+                    mAdapter.notifyDataSetChanged();
+                }
 
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
                 String JSONObject = gson.toJson(RutineList);
 
                 CurrentCliente.setExercise(JSONObject);
-
-                Log.d("JSONObject", JSONObject);
 
                 db.updateClient(CurrentCliente);
 
